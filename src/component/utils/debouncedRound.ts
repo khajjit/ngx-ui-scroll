@@ -12,7 +12,7 @@ const runTimer = (delay) => {
   }, delay);
 };
 
-const debouncedRound = (cb, delay) => {
+export const debouncedRound = (cb, delay) => {
   if (!timer) {
     cb();
   } else {
@@ -21,5 +21,3 @@ const debouncedRound = (cb, delay) => {
   }
   runTimer(delay);
 };
-
-export default debouncedRound;
