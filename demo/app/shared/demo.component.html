@@ -1,0 +1,53 @@
+<div class="demo">
+
+  <h3 id="{{context.titleId}}">
+    {{context.title}}
+    <a href="#/{{context.scope}}#{{context.titleId}}">#</a>
+  </h3>
+
+  <div class="actions">
+    <ng-content select="[actions]"></ng-content>
+  </div>
+
+  <div class="work" *ngIf="!context.noWorkView">
+    <div style="float: left">
+      <div class="viewport {{context.addClass || ''}}" id="{{context.viewportId}}">
+        <div *uiScroll="let item of datasource">
+          <div
+            class="item {{context.addClass || ''}}"
+            [style.height]="item.height !== undefined ? item.height + 'px' : null"
+          >{{item.text}}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="log elements {{context.addClass || ''}}">
+      DOM elements
+      <pre>{{elements(context.viewportId)}}</pre>
+    </div>
+    <div class="log datasource {{context.addClass || ''}}">
+      Datasource.get log
+      <pre>{{context.log}}</pre>
+    </div>
+    <div class="clearfix mb-3"></div>
+  </div>
+
+  <div class="sources">
+    <tabset>
+      <tab heading="Component">
+        <pre class="prettyprint">{{sources.datasource}}</pre>
+      </tab>
+      <tab heading="Template">
+        <pre class="prettyprint lang-html">{{sources.template}}</pre>
+      </tab>
+      <tab heading="CSS">
+        <pre class="prettyprint">{{sources.styles}}</pre>
+      </tab>
+    </tabset>
+  </div>
+
+  <div class="description">
+    <ng-content select="[description]"></ng-content>
+  </div>
+
+</div>

@@ -1,6 +1,22 @@
 import { Datasource } from './datasource';
-import { Settings } from './settings';
+import { Adapter, AdapterAction, AdapterActionType } from './adapter';
+import { Settings, DevSettings } from './settings';
 import { Direction } from './direction';
-import { Item } from './item';
+import { Run } from './run';
+import { State, PreviousClip } from './state';
+import { Process, ProcessSubject } from './process';
 
-export { Datasource, Direction, Item, Settings };
+export {
+  Datasource,
+  Direction,
+  Settings,
+  DevSettings,
+  Run,
+  Process,
+  ProcessSubject,
+  State,
+  PreviousClip,
+  Adapter,
+  AdapterAction,
+  AdapterActionType
+};

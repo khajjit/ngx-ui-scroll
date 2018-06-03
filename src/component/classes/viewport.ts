@@ -1,32 +1,54 @@
 import { ElementRef } from '@angular/core';
 import { Padding } from './padding';
-import { Direction } from '../interfaces/direction';
+import { Direction } from '../interfaces/index';
+import { Routines } from './domRoutines';
 import { Settings } from './settings';
 
 export class ViewportPadding {
   forward: Padding;
   backward: Padding;
 
-  constructor(element) {
-    this.forward = new Padding(element, Direction.forward);
-    this.backward = new Padding(element, Direction.backward);
+  constructor(element, routines: Routines, settings: Settings) {
+    this.forward = new Padding(element, Direction.forward, routines, settings.paddingForwardSize);
+    this.backward = new Padding(element, Direction.backward, routines, settings.paddingBackwardSize);
+  }
+
+  reset() {
+    this.forward.reset();
+    this.backward.reset();
   }
 }
 
 export class Viewport {
 
-  private settings: Settings;
-  private host = null;
-  scrollable = null;
+  scrollable;
   padding: ViewportPadding;
+  syntheticScrollPosition: number;
 
+  readonly host;
+  readonly routines: Routines;
+  private settings: Settings;
   private lastPosition: number;
 
-  constructor(elementRef: ElementRef, settings: Settings) {
+  constructor(elementRef: ElementRef, settings: Settings, routines: Routines) {
     this.settings = settings;
+    this.routines = routines;
     this.host = elementRef.nativeElement;
-    this.scrollable = elementRef.nativeElement.parentElement;
-    this.padding = new ViewportPadding(this.host);
+    this.padding = new ViewportPadding(this.host, this.routines, settings);
+    this.syntheticScrollPosition = null;
+
+    if (settings.windowViewport) {
+      this.scrollable = elementRef.nativeElement.ownerDocument;
+    } else {
+      this.scrollable = elementRef.nativeElement.parentElement;
+    }
+  }
+
+  reset() {
+    this.scrollPosition = 0;
+    this.lastPosition = 0;
+    this.syntheticScrollPosition = null;
+    this.padding.reset();
   }
 
   get children(): HTMLCollection {
@@ -34,11 +56,11 @@ export class Viewport {
   }
 
   get scrollPosition(): number {
-    return this.scrollable.scrollTop;
+    return this.routines.getScrollPosition(this.scrollable);
   }
 
   set scrollPosition(value: number) {
-    this.scrollable.scrollTop = value;
+    this.routines.setScrollPosition(this.scrollable, value);
   }
 
   saveScrollPosition() {
@@ -49,19 +71,12 @@ export class Viewport {
     return this.lastPosition;
   }
 
-  getScrollDirection(): Direction {
-    const lastScrollPosition = this.getLastPosition();
-    const scrollPosition = this.scrollPosition;
-    if (lastScrollPosition < scrollPosition) {
-      return Direction.forward;
-    } else if (lastScrollPosition > scrollPosition) {
-      return Direction.backward;
-    }
-    return;
+  getSize(): number {
+    return this.routines.getSize(this.scrollable);
   }
 
-  getSize(): number {
-    return this.scrollable.getBoundingClientRect().height;
+  getScrollableSize(): number {
+    return this.routines.getScrollableSize(this.scrollable);
   }
 
   getBufferPadding(): number {
@@ -69,32 +84,12 @@ export class Viewport {
   }
 
   getEdge(direction: Direction, opposite?: boolean): number {
-    const params = this.scrollable.getBoundingClientRect();
-    const result = params[direction === (!opposite ? Direction.forward : Direction.backward) ? 'bottom' : 'top'];
-    // const result = this.scrollable.offsetTop +
-    //   (direction === (!opposite ? Direction.forward : Direction.backward) ? this.getSize() : 0);
-    return result;
+    return this.routines.getEdge(this.scrollable, direction, opposite);
   }
 
   getLimit(direction: Direction, opposite?: boolean): number {
     return this.getEdge(direction, opposite) +
       (direction === (!opposite ? Direction.forward : Direction.backward) ? 1 : -1) * this.getBufferPadding();
-  }
-
-  getItemSize(element): number {
-    return element.getBoundingClientRect().height;
-  }
-
-  getItemEdge(element, direction: Direction, opposite?: boolean): number {
-    const params = element.getBoundingClientRect();
-    const result = params[direction === (!opposite ? Direction.forward : Direction.backward) ? 'bottom' : 'top'];
-    // const result = element.offsetTop - this.scrollable.scrollTop +
-    //   (direction === (!opposite ? Direction.forward : Direction.backward) ? this.getItemSize(element) : 0);
-    return result;
-  }
-
-  hideItem(element) {
-    element.style.display = 'none';
   }
 
 }

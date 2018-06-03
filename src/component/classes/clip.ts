@@ -1,12 +1,16 @@
-import { Direction } from '../interfaces/direction';
-
 export class ClipByDirection {
   shouldClip: boolean;
   size: number;
+  items: number;
 
   constructor() {
+    this.reset();
+  }
+
+  reset() {
     this.shouldClip = false;
     this.size = null;
+    this.items = null;
   }
 }
 
@@ -17,9 +21,15 @@ export class ClipModel {
   constructor() {
     this.forward = new ClipByDirection();
     this.backward = new ClipByDirection();
+    this.reset();
+  }
+
+  reset() {
+    this.backward.reset();
+    this.forward.reset();
   }
 
   get shouldClip(): boolean {
-    return this[Direction.forward].shouldClip || this[Direction.backward].shouldClip;
+    return this.forward.shouldClip || this.backward.shouldClip;
   }
 }

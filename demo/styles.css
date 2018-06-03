@@ -1,0 +1,134 @@
+h1 {
+  margin: 3rem 0 0 0;
+}
+
+h3 {
+  cursor: pointer;
+  border-bottom: 1px solid #efefef;
+  padding-top: 3rem;
+  margin-bottom: 2rem;
+}
+
+.navbar-brand {
+  font-size: 2rem;
+}
+
+.navbar-link {
+  margin-right: 0.5rem;
+}
+
+.navbar .container {
+  height: 4rem;
+  color: #fff;
+}
+
+.navbar .container a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.navbar .container .copyrights {
+  color: #aaa;
+  font-size: small;
+  margin-top: 2rem;
+}
+
+.navbar .container .copyrights a {
+  color: #aaa;
+}
+
+.navbar .container .copyrights a:hover {
+  color: #fff;
+}
+
+.demo .actions {
+  margin-bottom: 20px;
+}
+
+
+.demo .work {
+  margin-left: 20px;
+}
+
+.demo .work .viewport, .viewport {
+  width: 175px;
+  height: 175px;
+  overflow-anchor: none;
+  overflow-y: auto;
+}
+
+.demo .work .viewport.horizontal {
+  width: 250px;
+  height: 100px;
+  overflow-anchor: none;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  white-space: nowrap;
+}
+
+.demo .work .viewport.horizontal div {
+  display: inline-block;
+}
+
+.demo .work .viewport ui-scroll>div:nth-child(odd) {
+  background-color: #e6e6e6;
+}
+
+.demo .work .item {
+  font-weight: bolder;
+  height: 25px;
+}
+
+.demo .work .item.horizontal {
+  border: 1px solid #aaa;
+  height: 100px;
+  padding: 0 5px;
+  font-weight: bolder;
+}
+
+.demo .work .log {
+  height: 175px;
+  width: 175px;
+  overflow-y: hidden;
+  font-size: smaller;
+  line-height: 14px;
+  float: left;
+}
+
+.demo .work .log.horizontal {
+  height: 100px;
+}
+
+.demo .work .log.elements {
+  padding-left: 20px;
+  width: 115px;
+}
+
+.demo .work .log.datasource {
+  padding-left: 10px;
+  width: 190px;
+}
+
+.over {
+  position: fixed;
+  left: 150px;
+}
+
+/* code styles */
+
+pre.prettyprint {
+  font-size: 87.5%;
+  line-height: 125%;
+  border: 0;
+}
+pre .kwd { font-weight: bold; color: #204a87; }
+pre .tag { font-weight: bold; color: #204a87; }
+pre .atn { font-weight: bold }
+li.L0,li.L1,li.L2,li.L3,li.L5,li.L6,li.L7,li.L8 { list-style-type: none }
+li.L1,li.L3,li.L5,li.L7,li.L9 { }
+@media print {
+  pre .kwd, code .kwd { font-weight: bold; color: #204a87; }
+  pre .com, code .com { font-style: italic }
+  pre .typ, code .typ { font-weight: bold }
+  pre .tag, code .tag { font-weight: bold; color: #204a87; }
+}

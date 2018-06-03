@@ -4,27 +4,25 @@ import {
   ChangeDetectionStrategy, ChangeDetectorRef
 } from '@angular/core';
 
-import { WorkflowRunner } from './component/runner';
-import { Datasource, Item } from './component/interfaces/index';
+import { Workflow } from './component/workflow';
+import { Datasource } from './component/interfaces/index';
+import { Item } from './component/classes/item';
 
 @Component({
-  selector: 'ui-scroll',
+  selector: '[ui-scroll]',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `
-<div data-padding-backward></div>
-<div *ngFor="let item of items" id="{{item.nodeId}}">
-  <div [style.position]="item.invisible ? 'fixed' : null" [style.left]="item.invisible ? '-99999px' : null" >
-    <ng-template
-      [ngTemplateOutlet]="template"
-      [ngTemplateOutletContext]="{
-        $implicit: item.data,
-        index: item.$index
-     }">
-    </ng-template>
-  </div>
-</div>
-<div data-padding-forward></div>
-`
+  template: `<div data-padding-backward></div><div
+  *ngFor="let item of items"
+  [attr.data-sid]="item.nodeId"
+  [style.position]="item.invisible ? 'fixed' : null"
+  [style.left]="item.invisible ? '-99999px' : null"
+><ng-template
+  [ngTemplateOutlet]="template"
+  [ngTemplateOutletContext]="{
+    $implicit: item.data,
+    index: item.$index
+ }"
+></ng-template></div><div data-padding-forward></div>`
 })
 export class UiScrollComponent implements OnInit, OnDestroy {
 
@@ -36,7 +34,7 @@ export class UiScrollComponent implements OnInit, OnDestroy {
   public items: Array<Item>;
 
   // Component-Workflow integration
-  public workflowRunner: WorkflowRunner;
+  public workflow: Workflow;
 
   constructor(
     private changeDetector: ChangeDetectorRef,
@@ -46,10 +44,10 @@ export class UiScrollComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.workflowRunner = new WorkflowRunner(this);
+    this.workflow = new Workflow(this);
   }
 
   ngOnDestroy() {
-    this.workflowRunner.dispose();
+    this.workflow.dispose();
   }
 }
